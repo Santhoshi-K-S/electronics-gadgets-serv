@@ -47,28 +47,6 @@ io.on('connection', (socket) => {
   });
 });
 
-app.get("/api/product", (req, res) => {
-  const productData = {
-    title: "Latest Gadget",
-    description:
-      "Our latest gadget is designed to improve your lifestyle with cutting-edge technology and innovative features.",
-    features: [
-      "High-Resolution Display",
-      "Long Battery Life",
-      "Advanced Processor",
-      "Lightweight and Portable",
-    ],
-    benefits: [
-      "Enhanced Productivity",
-      "Seamless Connectivity",
-      "Stunning Visuals",
-      "Durability",
-    ],
-    image: "https://via.placeholder.com/600x400",
-  };
-  res.json(productData);
-});
-
 app.get("/api/featuredProducts", (req, res) => {
   const products = [
     {
@@ -165,5 +143,6 @@ app.get("/api/items", (req, res) => {
   res.json(items);
 });
 
-const PORT = 4000;
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+export default (req, res) => {
+  server.emit('request', req, res); // Forward requests to the server
+};
