@@ -1,0 +1,14 @@
+{
+    "name": "chat-server",
+    "version": "1.0.0",
+    "description": "Chat server for electronics gadgets website",
+    "main": "server.js",
+    "scripts": {
+      "start": "node server.js"
+    },
+    "dependencies": {
+      "express": "^4.17.1",
+      "socket.io": "^4.0.0",
+      "cors": "^2.8.5"
+    }
+  }
