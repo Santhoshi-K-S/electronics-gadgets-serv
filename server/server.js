@@ -13,6 +13,39 @@ const io = socketIo(server, {
 });
 
 app.use(cors());
+let chatHistory = [];
+
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+
+  // Send chat history to newly connected clients
+  socket.emit('chat history', chatHistory);
+
+  // Listen for chat messages
+  socket.on('chat message', (msg) => {
+      const message = { id: 'user', text: msg };
+      chatHistory.push(message);
+      io.emit('chat message', message);
+  });
+
+  // Listen for system responses
+  socket.on('system response', (msg) => {
+      const response = { id: 'system', text: `System response: ${msg}` };
+      chatHistory.push(response);
+      io.emit('chat message', response);
+  });
+
+  // Handle clearing the chat
+  socket.on('clear chat', () => {
+      chatHistory = [];
+      io.emit('chat history', chatHistory);
+  });
+
+  socket.on('disconnect', () => {
+      console.log('user disconnected');
+  });
+});
 
 app.get("/api/product", (req, res) => {
   const productData = {
@@ -130,18 +163,6 @@ app.get("/api/items", (req, res) => {
     },
   ];
   res.json(items);
-});
-
-io.on("connection", (socket) => {
-  console.log("New client connected");
-
-  socket.on("message", (message) => {
-    io.emit("message", message);
-  });
-
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
-  });
 });
 
 const PORT = 4000;
