@@ -45,6 +45,10 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
       console.log('user disconnected');
   });
+
+  socket.on('error', (err) => {
+    console.error('Socket error:', err);
+  });
 });
 
 app.get("/api/featuredProducts", (req, res) => {
@@ -143,6 +147,5 @@ app.get("/api/items", (req, res) => {
   res.json(items);
 });
 
-export default (req, res) => {
-  server.emit('request', req, res); // Forward requests to the server
-};
+const PORT = 4000;
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
